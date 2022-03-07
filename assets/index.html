@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>JS Quiz</title>
+    <link rel="stylesheet" href="./assets/css/quiz.css" />
+</head>
+<body>
+<dialog class="rules-dialog">
+    <label for="name-input"></label>
+    <input type="text" class="text-input" id="name-input" placeholder="Enter initials" />
+    <button id="name-save">Save</button>
+</dialog>
+<!-- score, time, and question -->
+<dialog class="rules-dialog" id="quiz-rules" open>
+    <h1 class="rules-header">Rules: </h1><hr>
+    <article>
+        <ol class="ruleset">
+            <li>This is a timed quiz.</li>
+            <li>You will not be able to go back once you choose an answer</li>
+        </ol>
+    </article>
+    <input type="button" value="Start" class="start button-default" id="start"/>
+</dialog>
+<!-- answer options -->
+<div class="quiz-components">
+    <div class="timer-score-container">
+        <div class="timer-container">
+            <h4 id="timer-text">Time: </h4>
+        </div>
+        <div class="score-container">
+            <h4 id="score-text">Score: </h4>
+        </div>
+    </div>
+    <div class="question-text-container">
+        <h4 id="question-text">Question goes here</h4>
+    </div>
+</div>
+<div class="quiz-main grid">
+    <div class="row option-main-container" id="op1c">
+        <div class="option-container column">
+            <button type="button" class="option" id="op1">Option 1</button>
+        </div>
+    </div>
+    <div class="option-main-container" id="op2c">
+        <div class="option-container column">
+            <button type="button" class="option" id="op2">Option 2</button>
+        </div>
+    </div>
+    <div class="row option-main-container">
+        <div class="option-container column" id="op3c">
+            <button type="button" class="option" id="op3">Option 3</button>
+        </div>
+    </div>
+    <div class="row option-main-container">
+        <div class="option-container column" id="op4c">
+            <button type="button" class="option" id="op4">Option 4</button>
+        </div>
+    </div>
+</div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="assets/js/quiz.js"></script>
+
+</html>
