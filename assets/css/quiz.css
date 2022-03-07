@@ -41,3 +41,7 @@ body{
     grid-template: auto auto / auto auto;
     justify-content: space-evenly;
 }
+
+a:hover{
+    cursor: pointer;
+}

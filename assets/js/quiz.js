@@ -59,7 +59,9 @@ let t = 45, id = 0,
     saveScore = document.querySelector('#name-save'),
     score = 0,
     resultDialog = document.querySelector('.rules-dialog'),
-    started;
+    started, viewAttempts = document.querySelector('.attempts'),
+    attemptsDialog = document.querySelector('.attempts-dialog'),
+    attempt = 0;
 
 //functions
 class Quiz{
@@ -147,7 +149,8 @@ answerOptions.forEach((o) => {
 });
 
 saveScore.addEventListener('click', function(){
-    localStorage.setItem("scores", JSON.stringify({
+
+    localStorage.setItem(`attempt # ${attempt+=1}`, JSON.stringify({
         name: document.querySelector("#name-input").value,
         score: score
     }));
@@ -157,3 +160,7 @@ saveScore.addEventListener('click', function(){
     dialog.open = true;
     resultDialog.open = false;
 });
+    viewAttempts.addEventListener('click', function(){
+        attemptsDialog.textContent = `${JSON.parse(localStorage.getItem(`attempt # 1`)).name}`+ "  :  "+`${JSON.parse(localStorage.getItem(`attempt # 1`)).score}`
+        attemptsDialog.open = true;
+    });
