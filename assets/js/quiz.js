@@ -56,8 +56,9 @@ let t = 45, id = 0,
             ]
         },
     ],
-    saveScore = document.querySelector('.save-score'),
-    score = 0;;
+    saveScore = document.querySelector('#name-save'),
+    score = 0,
+    resultDialog = document.querySelector('.rules-dialog');
 
 //functions
 class Quiz{
@@ -117,14 +118,23 @@ answerOptions.forEach((o) => {
             score++;
             scoreEl.textContent = `Score: ${score}`
             id++;
-            Quiz.nextQuestion(id);
+            if (id <= questions.length-1)
+                Quiz.nextQuestion(id);
+            if (id > questions.length-1){
+                resultDialog.open = true;
+                answerOptions.forEach((ops) =>{
+                    ops.style.display = "none";
+                    questionText.style.display = "none";
+                })
+            }
         }
+
     });
 });
 
 saveScore.addEventListener('click', function(){
-    localStorage.setItem(JSON.stringify({
-        name: document.querySelector(".initials-input").textContent,
+    localStorage.setItem("scores", JSON.stringify({
+        name: document.querySelector("#name-input").value,
         score: score
-    }))
+    }));
 })
