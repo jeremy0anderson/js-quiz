@@ -55,20 +55,29 @@ let t = 45, id = 0,
                 { text: "Translating HTML documents", isCorrect: false }
             ]
         },
-    ];
+    ],
+    saveScore = document.querySelector('.save-score'),
+    score = 0;;
 
 //functions
 class Quiz{
     static nextQuestion(id){
         this.id = id;
         for (let i = 0; i < questions[id].a.length; i++) {
-            questionText.textContent = questions[this.id].q;
-            answerOptions[i].textContent = questions[id].a[i].text;
-            answerOptions[i].value = questions[id].a[i].isCorrect;
+            if (questions[id].a.length === undefined){
+                questionText.style.display = "none";
+                answerOptions[i].style.display = "none";
+                document.querySelector('.rules-dialog').open = true;
+            }
+            if (id <= questions.length-1) {
+                questionText.textContent = questions[id].q;
+                answerOptions[i].textContent = questions[id].a[i].text;
+                answerOptions[i].value = questions[id].a[i].isCorrect;
+            }
         }
     }
-
 }
+
 function closeDialog(dialogElement){
     if (dialogElement.open){
         return dialogElement.open = false;
@@ -104,10 +113,18 @@ answerOptions.forEach((o) => {
             timerEl.textcontent = `Time: ${t}`;
             id++;
             Quiz.nextQuestion(id);
-        } else {
-
+        } else if (event.target.value === "true") {
+            score++;
+            scoreEl.textContent = `Score: ${score}`
             id++;
             Quiz.nextQuestion(id);
         }
     });
 });
+
+saveScore.addEventListener('click', function(){
+    localStorage.setItem(JSON.stringify({
+        name: document.querySelector(".initials-input").textContent,
+        score: score
+    }))
+})
