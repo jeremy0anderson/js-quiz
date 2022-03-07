@@ -58,7 +58,8 @@ let t = 45, id = 0,
     ],
     saveScore = document.querySelector('#name-save'),
     score = 0,
-    resultDialog = document.querySelector('.rules-dialog');
+    resultDialog = document.querySelector('.rules-dialog'),
+    started;
 
 //functions
 class Quiz{
@@ -90,8 +91,8 @@ function startTimer(){
         if (t>0){
             t--;
             timerEl.textContent = `Time: ${t}`;
-        } else if (t <= 0){
-            clearInterval(t);
+        } else if (t <= 0 || started === false){
+            clearInterval(ti);
             timerEl.textContent = `Time: ${t}`;
         }
     },1000)
@@ -99,25 +100,38 @@ function startTimer(){
 
 //event listeners//
 start.addEventListener('click', (e) =>{
-    console.log(' yes ');
+    id = 0; t = 45;
     if (e.target.parentElement === dialog){
         closeDialog(dialog);
         startTimer();
         Quiz.nextQuestion(id);
+        for (let i = 0; i < answerOptions.length; i++) {
+            answerOptions[i].style.display = "grid";
+            questionText.style.display = "grid";
+        }
+
     }
 });
 
 answerOptions.forEach((o) => {
-    return o.addEventListener('click', function(event){
+    o.addEventListener('click', function(event){
         if (event.target.value === "false"){
+            event.target.style.backgroundColor = "red";
+            setTimeout(() =>{
+                event.target.style.backgroundColor = "lightgray";
+            }, 100);
             t-=5;
             timerEl.textcontent = `Time: ${t}`;
             id++;
             Quiz.nextQuestion(id);
         } else if (event.target.value === "true") {
+            setTimeout(() =>{
+                event.target.style.backgroundColor = "lightgray";
+            }, 100);
             score++;
             scoreEl.textContent = `Score: ${score}`
             id++;
+            event.target.style.backgroundColor = "green";
             if (id <= questions.length-1)
                 Quiz.nextQuestion(id);
             if (id > questions.length-1){
@@ -137,4 +151,9 @@ saveScore.addEventListener('click', function(){
         name: document.querySelector("#name-input").value,
         score: score
     }));
-})
+    document.querySelector("#name-input").value = "";
+    score = 0; scoreEl.textContent = `Score: ${score}`;
+    id = 0;
+    dialog.open = true;
+    resultDialog.open = false;
+});
