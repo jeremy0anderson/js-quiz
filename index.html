@@ -7,32 +7,35 @@
     <link rel="stylesheet" href="/assets/css/quiz.css" />
 </head>
 <body>
-<a class="attempts">View Previous Attempt</a>
 <dialog class="attempts-dialog">
-    <div>
-
-    </div>
+    <ul class="attempts-list">
+    </ul>
+    <button id="close-attempts">Close</button>
 </dialog>
-<dialog class="rules-dialog">
+<dialog class="results-dialog" style="height: 200px;">
     <label for="name-input"></label>
-    <input type="text" class="text-input" id="name-input" placeholder="Enter initials" />
-    <button id="name-save">Save</button>
+    <form id="name-save-input">
+        <input type="text" class="text-input" id="name-input" placeholder="Enter initials" />
+    </form>
+    <input type="submit" form="name-save-input" value="Save" id="name-save"/>
+    <button id="close-save">Close</button>
 </dialog>
-<!-- score, time, and question -->
 <dialog class="rules-dialog" id="quiz-rules" open>
     <h1 class="rules-header">Rules: </h1><hr>
     <article>
         <ol class="ruleset">
-            <li>This is a timed quiz.</li>
+            <li>You will have 45 seconds to answer all questions.</li>
             <li>You will not be able to go back once you choose an answer</li>
+            <li>If you answer incorrectly, your time is reduced by 5 seconds</li>
+            <li>Once the quiz is finished, you'll be able to enter your name/initials to save your score</li>
+            <li>You may view your previous attempts if they exist</li>
         </ol>
     </article>
     <input type="button" value="Start" class="start button-default" id="start"/>
+    <button class="attempts">View Previous Attempts</button>
 </dialog>
 <!--<dialog class="rules-dialog">-->
 <!--    <h3>Enter your Name/Initials</h3>-->
-<!--    <label for="name-input"></label>-->
-<!--        <input type="text" class="initials-input" id="name-input"/>-->
 <!--        <button class="save-score">Save </button>-->
 <!--</dialog>-->
 <!-- answer options -->
@@ -73,6 +76,6 @@
 </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="/assets/js/quiz.js"></script>
-
+<!--<script src="./assets/js/quiz.js"></script>-->
+<script src="assets/js/questions.js"></script>
 </html>
