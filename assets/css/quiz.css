@@ -1,5 +1,6 @@
 body{
     text-align: center;
+    font-family: sans-serif;
 }
 .ruleset li{
     text-align: left;
@@ -32,7 +33,15 @@ body{
 
 #name-input{
     text-align: center;
+    padding: 10px;
 }
+#name-save, #close-save{
+    border-style: none;
+    padding: 10px;
+    border-radius: 12px;
+    margin: 15px;
+}
+
 .option{
     margin: 10px;
     padding: 15px;
@@ -86,4 +95,5 @@ body{
 .results-dialog{
     border-style: none;
     box-shadow:0 10px 12px 0 gray;
+    border-radius: 12px;
 }

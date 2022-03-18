@@ -57,6 +57,15 @@ let t = 45, id = 0, attempt = 0,score = 0, ti,
                       { text: "Translating HTML documents", isCorrect: false }
                 ]
           },
+          {
+                id: 5,
+                q: "Which of the following would be an appropriate statement to write between the parentheses when calling the function: document.querySelector()?",
+                a: [{ text: "<" + "tagname"+">", isCorrect: false },
+                      { text: "#elementID", isCorrect: true },
+                      { text: "#className", isCorrect: false },
+                      { text: "No parameter is required for that function", isCorrect: false }
+                ]
+          },
     ],
     saveScore = document.querySelector('#name-save'),
     resultDialog = document.querySelector('.results-dialog'),
@@ -72,7 +81,7 @@ function open(d){
       return d.open = true;
 }
 function getAttempts(){
-      if (!localStorage.getItem('attempts')){
+      if (!(localStorage.getItem('attempts'))){
             let noAttempts = document.createElement('p');
             noAttempts.textContent = "No attempts saved yet";
             attemptsDialog.prepend(noAttempts);
@@ -95,6 +104,7 @@ function storeAttempt() {
 function displayScores(){
       getAttempts();
       attemptsDialog.open = true;
+      
       storedScore.forEach(s =>{
             if (storedScore.length <= JSON.parse(localStorage.getItem('attempts')).length) {
                   const li = document.createElement('li');
@@ -103,7 +113,7 @@ function displayScores(){
                   ul.appendChild(li);
                   const sLi = document.createElement('li');
                   sLi.className = "attempts-list-score";
-                  sLi.textContent = `Score: ${s.score}`;
+                  sLi.textContent = `Score: ${s.score} out of ${questions.length}`;
                   ul.appendChild(sLi);
             } else if (document.querySelector('.attempts-list-name')&&document.querySelector('.attempts-list-score')){
                   console.log("already displaying all scores")
@@ -111,14 +121,10 @@ function displayScores(){
       })
 }
 function Question(id){
-      for (let i = 0; i < questions[id].a.length; i++) {
-            if (id <= questions.length - 1) {
+      for (let i = 0; i < 4; i++) {
                   questionText.textContent = questions[id].q;
                   answerOptions[i].textContent = questions[id].a[i].text;
                   answerOptions[i].value = questions[id].a[i].isCorrect;
-            }else if (id > questions.length-1){
-                  started = false;
-            }
       }
 }
 function startTimer(){
@@ -126,13 +132,32 @@ function startTimer(){
             if (t>0){
                   t--;
                   timerEl.textContent = `Time: ${t}`;
-            } else if (t <= 0 || id > questions.length-1){
+            } else if (t <= 0 || !(questions[id].id)){
                   started = false;
                   clearInterval(ti);
                   timerEl.textContent = `Time: ${t}`;
             }
       },1000)
 }
+function restoreStyle(e) {
+      return setTimeout(() => {
+            e.target.style.backgroundColor = "whitesmoke";
+            e.target.style.color = "black";
+            timerEl.style.color = "black";
+            id++;
+            if (!(!questions[id])){
+                  try {
+                        Question(id)
+                  } catch(e){
+                        console.log(e);
+                  }
+            }else{
+                  endQuiz(e);
+                  console.log('no more questions');
+            }
+      }, 200);
+}
+
 function correct(e){
       this.e = e;
       score+=1;
@@ -141,6 +166,7 @@ function correct(e){
       this.e.target.style.color = "white";
       restoreStyle(e)
 }
+
 function incorrect(e){
       e.target.style.backgroundColor = "red";
       e.target.style.color = "white";
@@ -149,19 +175,10 @@ function incorrect(e){
       timerEl.style.color = "red";
       restoreStyle(e);
 }
-function restoreStyle(e) {
-            return setTimeout(() => {
-                  e.target.style.backgroundColor = "whitesmoke";
-                  e.target.style.color = "black";
-                  timerEl.style.color = "black";
-                  id++;
-                  Question(id);
-            }, 200);
-}
+
 function endQuiz(e) {
       return setTimeout(() => {
             clearInterval(ti)
-            console.log("no more questions");
             document.querySelector('.quiz-main').style.display = "none";
             questionText.style.display = "none";
             resultDialog.open = true;
@@ -179,6 +196,7 @@ function checkAnswer(e) {
                         break;
             }
 }
+
 function startQuiz(){
       started = true;
       timerEl.textContent = `Time: ${t}`
@@ -194,13 +212,7 @@ start.addEventListener('click', startQuiz);
 
 answerOptions.forEach(o => {
       o.addEventListener('click', function(event){
-            if (id === questions.length-1){
-                  checkAnswer(event);
-                  return endQuiz(event);
-            }
-            else {
-                  checkAnswer(event);
-            }
+          checkAnswer(event);
       });
 });
 
@@ -208,6 +220,7 @@ viewAttempts.addEventListener('click', ()=>{
       attemptsDialog.open = true;
       displayScores();
       close(dialog);
+      close(resultDialog);
       viewAttempts.disabled = true;
 });
 closeAttempts.addEventListener('click', () => {
